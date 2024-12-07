@@ -1,14 +1,12 @@
 import streamlit as st
 import requests
 import pandas as pd
-from dotenv import load_dotenv
-import os
 
-# .env 파일에서 환경 변수 로드
-load_dotenv()
-CLIENT_ID = os.getenv("NAVER_CLIENT_ID")
-CLIENT_SECRET = os.getenv("NAVER_CLIENT_SECRET")
 
+
+
+CLIENT_ID = oal5j2zwex
+CLIENT_SECRET = q6i26fq8MRCDsw1Epn4s3xYsqxJRfug3cAT8xJdx
 # API 키가 제대로 로드되었는지 확인 (디버깅용)
 st.write(CLIENT_ID, CLIENT_SECRET)
 
