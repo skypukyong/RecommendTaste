@@ -8,7 +8,7 @@ import os
 load_dotenv()
 CLIENT_ID = os.getenv("NAVER_CLIENT_ID")
 CLIENT_SECRET = os.getenv("NAVER_CLIENT_SECRET")
-st.caching.clear_cache()
+
 # Helper functions
 def get_coordinates(address, client_id, client_secret):
     """Get coordinates (latitude and longitude) for a given address."""
