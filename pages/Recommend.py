@@ -10,7 +10,7 @@ CLIENT_ID = os.getenv("NAVER_CLIENT_ID")
 CLIENT_SECRET = os.getenv("NAVER_CLIENT_SECRET")
 
 # API 키가 제대로 로드되었는지 확인 (디버깅용)
-print(CLIENT_ID, CLIENT_SECRET)
+st.write(CLIENT_ID, CLIENT_SECRET)
 
 # Helper functions
 def get_coordinates(address, client_id, client_secret):
