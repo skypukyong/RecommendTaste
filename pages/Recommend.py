@@ -14,8 +14,8 @@ def get_coordinates(address, client_id, client_secret):
     """Get coordinates (latitude and longitude) for a given address."""
     url = "https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode"
     headers = {
-        "X-NCP-APIGW-API-KEY-ID": ci34q2w2vz,
-        "X-NCP-APIGW-API-KEY": TlAbvAIrxTnMcpL2xiFwyUckMtkLN19LSCupGkQ6
+        "X-NCP-APIGW-API-KEY-ID": client_id,
+        "X-NCP-APIGW-API-KEY": client_secret
     }
     params = {"query": address}
     response = requests.get(url, headers=headers, params=params)
