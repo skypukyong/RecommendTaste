@@ -40,8 +40,8 @@ def search_nearby_places(query, x, y):
     }
     params = {
         "query": query,  # 검색어 (예: "맛집")
-        "x": "129.091799129.091799",  # 경도
-        "y": "35.132965",  # 위도
+        "x": x,  # 경도
+        "y": y,  # 위도
         "sort": "random",  # 정렬 방식
         "display": 7,       # 결과 개수
         "timestamp": int(time.time())  # 시간 정보 추가 (캐시 회피)
