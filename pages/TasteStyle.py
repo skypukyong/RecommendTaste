@@ -9,6 +9,14 @@ from openai import OpenAI
 load_dotenv()
 api_key = os.getenv("api")
 
+if api_key:
+    st.session_state['api_key'] = api_key
+    if 'openai_client' in st.session_state:
+        client = st.session_state['openai_client']
+    else:
+        client = OpenAI(api_key=api_key)
+        st.session_state['openai_client'] = client
+
 @st.cache_data
 def ask_gpt(messages):
     client = st.session_state['openai_client']
