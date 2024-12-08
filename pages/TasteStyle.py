@@ -8,15 +8,6 @@ import re
 load_dotenv()
 PLACE_CLIENT_ID = os.getenv("PLACE_CLIENT_ID")  # Place Search API Client ID
 PLACE_CLIENT_SECRET = os.getenv("PLACE_CLIENT_SECRET")  # Place Search API Client Secret
-api_key = os.getenv("api")
-
-if api_key:
-    st.session_state['api_key'] = api_key
-    if 'openai_client' in st.session_state:
-        client = st.session_state['openai_client']
-    else:
-        client = OpenAI(api_key=api_key)
-        st.session_state['openai_client'] = client
 
 # HTML 태그 제거 함수
 def clean_html(text):
