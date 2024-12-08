@@ -6,10 +6,18 @@ import pandas as pd
 
 # 환경 변수 로드
 load_dotenv()
+
+# 환경 변수 확인 (디버깅 용도)
 GEO_CLIENT_ID = os.getenv("GEO_CLIENT_ID")  # Geocoding API Client ID
 GEO_CLIENT_SECRET = os.getenv("GEO_CLIENT_SECRET")  # Geocoding API Client Secret
 PLACE_CLIENT_ID = os.getenv("PLACE_CLIENT_ID")  # Place Search API Client ID
 PLACE_CLIENT_SECRET = os.getenv("PLACE_CLIENT_SECRET")  # Place Search API Client Secret
+
+# 환경 변수 값 확인 (디버깅 용도)
+st.write(f"GEO_CLIENT_ID: {GEO_CLIENT_ID}")
+st.write(f"GEO_CLIENT_SECRET: {GEO_CLIENT_SECRET}")
+st.write(f"PLACE_CLIENT_ID: {PLACE_CLIENT_ID}")
+st.write(f"PLACE_CLIENT_SECRET: {PLACE_CLIENT_SECRET}")
 
 # Geocoding API (주소 → 좌표 변환)
 def get_coordinates(address):
@@ -21,6 +29,7 @@ def get_coordinates(address):
     }
     params = {"query": address}
     response = requests.get(url, headers=headers, params=params)
+    
     if response.status_code == 200:
         coords = response.json()['addresses'][0]
         return float(coords['x']), float(coords['y'])
@@ -43,6 +52,7 @@ def search_nearby_places(query, x, y):
         "display": 5       # 결과 개수
     }
     response = requests.get(url, headers=headers, params=params)
+    
     if response.status_code == 200:
         return response.json()['items']
     else:
@@ -87,4 +97,4 @@ def main():
         recommend_restaurants()
 
 if __name__ == '__main__':
-    main() 
+    main()
