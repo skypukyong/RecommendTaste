@@ -2,7 +2,6 @@ import streamlit as st
 import requests
 from dotenv import load_dotenv
 import os
-import pandas as pd
 import re
 
 # 환경 변수 로드
@@ -42,11 +41,25 @@ def recommend_restaurants():
     # 주소 입력
     address = st.text_input("주소를 입력하세요")
     
+    # 맛 프로필 정보 가져오기
+    spicy_level = st.session_state.preferences.get('spicy_level', 5)
+    cuisine_preferences = st.session_state.preferences.get('cuisine_preferences', '한식')
+
+    # 매운맛 선호도 변환
+    if spicy_level <= 3:
+        spicy_description = "맵지 않은"
+    elif spicy_level >= 7:
+        spicy_description = "매운"
+    else:
+        spicy_description = "적당한 매운맛"
+    
     # 추천 버튼
     if st.button("추천받기"):
         try:
+            # 검색어 생성: 주소 + 맛 프로필
+            query = f"{address} {spicy_description} {cuisine_preferences}"
             # 2. Place Search API로 맛집 검색
-            places = search_nearby_places(address)
+            places = search_nearby_places(query)
             st.subheader("추천 맛집 목록")
             
             # 3. 결과 출력
@@ -54,16 +67,12 @@ def recommend_restaurants():
                 # HTML 태그 제거
                 cleaned_title = clean_html(place['title'])
                 cleaned_address = clean_html(place['address'])
-                st.write(f"**{cleaned_title}** - {cleaned_address} ([상세보기]({place['link']}))")
-            
-            # 4. 결과 CSV 저장
-            places_df = pd.DataFrame(places)
-            places_df['title'] = places_df['title'].apply(clean_html)
-            places_df['address'] = places_df['address'].apply(clean_html)
-            
-            # 5. 결과 리스트로 출력
-            st.subheader("추천된 맛집 정보")
-            st.write(places_df)  # DataFrame을 리스트 형태로 출력
+                
+                # 링크가 있는 경우만 링크 제공
+                if 'link' in place and place['link']:
+                    st.write(f"**{cleaned_title}** - {cleaned_address} ([상세보기]({place['link']}))")
+                else:
+                    st.write(f"**{cleaned_title}** - {cleaned_address}")
             
         except Exception as e:
             st.error(f"오류 발생: {e}")
@@ -92,14 +101,6 @@ def taste_preference_survey():
     )
     st.session_state.preferences['cuisine_preferences'] = cuisine_option
 
-    st.header('향신료 선호도')
-    spice_intensity = st.radio(
-        '향신료 강도 선호도',
-        ['약한 향신료', '중간 강도', '강한 향신료'],
-        help='음식의 향신료 강도를 선택해주세요'
-    )
-    st.session_state.preferences['spice_intensity'] = spice_intensity
-
     st.header('식단 선호도')
     diet_preference = st.radio(
         '식단 유형',
@@ -112,18 +113,20 @@ def taste_preference_survey():
         st.success('맛 프로필이 성공적으로 저장되었습니다! 👍')
         preference_str = generate_preference_string()
         st.text(preference_str)
-        
-        preferences_df = pd.DataFrame.from_dict(st.session_state.preferences, orient='index').T
-        preferences_df.to_csv('user_taste_preferences.csv', index=False)
 
 def generate_preference_string():
     preferences = st.session_state.preferences
     
+    # 매운맛 선호도 변환
+    if preferences['spicy_level'] <= 3:
+        spicy_description = "맵지 않은"
+    elif preferences['spicy_level'] >= 7:
+        spicy_description = "매운"
+    else:
+        spicy_description = "적당한 매운맛"
+    
     # 각 항목을 문자열로 변환하여 하나의 문자열로 합침
-    preference_str = f"매운맛 선호도: {preferences['spicy_level']}\n"
-    preference_str += f"요리 스타일 선호도: {preferences['cuisine_preferences']}\n"
-    preference_str += f"향신료 강도 선호도: {preferences['spice_intensity']}\n"
-    preference_str += f"식단 선호도: {preferences['diet_preference']}\n"
+    preference_str = f"{spicy_description} {preferences['cuisine_preferences']} {preferences['diet_preference']}"
     
     return preference_str
 
