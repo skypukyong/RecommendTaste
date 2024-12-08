@@ -43,7 +43,7 @@ def search_nearby_places(query, x, y):
         "x": x,  # 경도
         "y": y,  # 위도
         "sort": "random",  # 정렬 방식
-        "display": 5,       # 결과 개수
+        "display": 7,       # 결과 개수
         "timestamp": int(time.time())  # 시간 정보 추가 (캐시 회피)
     }
     response = requests.get(url, headers=headers, params=params)
