@@ -69,7 +69,7 @@ def recommend_restaurants():
             st.success(f"좌표를 찾았습니다: 경도={x}, 위도={y}")
             
             # 2. Place Search API로 맛집 검색
-            places = search_nearby_places("부산 남구 대연동 맛집", x, y)
+            places = search_nearby_places("맛집", x, y)
             st.subheader("추천 맛집 목록")
             
             # 3. 결과 출력
