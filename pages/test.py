@@ -61,6 +61,7 @@ def recommend_restaurants():
             # 2. Place Search API로 맛집 검색
             places = search_nearby_places(query)
             st.subheader("추천 맛집 목록")
+            st.write(query)
             
             # 3. 결과 출력
             for place in places:
