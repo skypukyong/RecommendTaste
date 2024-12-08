@@ -50,6 +50,12 @@ def taste_preference_survey():
     if 'preferences' not in st.session_state:
         st.session_state.preferences = {}
 
+    st.header('맛 프로필 제목')
+    profile_title = st.text_input('맛 프로필 제목을 입력해주세요', '나의 맛 프로필')  # 기본값으로 '나의 맛 프로필' 제공
+
+    if 'profile_list' not in st.session_state:
+        st.session_state.profile_list = []  # 프로필 목록 초기화
+
     st.header('매운맛 선호도')
     spicy_level = st.slider(
         '얼마나 매운 음식을 좋아하시나요?', 
@@ -71,11 +77,12 @@ def taste_preference_survey():
     if st.button('맛 프로필 완성하기'):
         # 스피너 표시
         with st.spinner('맛 프로필을 생성하는 중...'):
-            # 생성 작업을 수행한 후, 완료 메시지
-            preference_str = generate_preference_string()
+            # 생성 작업을 수행한 후, 프로필 저장
+            preference_str = generate_preference_string(profile_title)
+            st.session_state.profile_list.append({'title': profile_title, 'preferences': preference_str})
             st.success(f'맛 프로필이 성공적으로 저장되었습니다! 🎉')
 
-def generate_preference_string():
+def generate_preference_string(profile_title):
     preferences = st.session_state.preferences
     
     # 매운맛 선호도 변환
@@ -89,7 +96,33 @@ def generate_preference_string():
     # 각 항목을 문자열로 변환하여 하나의 문자열로 합침
     preference_str = f"{spicy_description} {preferences['cuisine_preferences']}"
     
-    return preference_str
+    return f"{profile_title}: {preference_str}"
+
+# 맛집 추천
+def recommend_restaurants():
+    st.title('🍽️ 맛집 추천')
+
+    if 'profile_list' not in st.session_state or len(st.session_state.profile_list) == 0:
+        st.warning('먼저 맛 프로필을 생성해주세요!')
+        return
+
+    # 맛 프로필 선택
+    profile_titles = [profile['title'] for profile in st.session_state.profile_list]
+    selected_profile_title = st.selectbox('추천할 맛 프로필을 선택하세요', profile_titles)
+
+    selected_profile = next(profile for profile in st.session_state.profile_list if profile['title'] == selected_profile_title)
+    
+    st.write(f"선택된 맛 프로필: {selected_profile['preferences']}")
+    
+    # 맛집 추천
+    query = selected_profile['preferences']
+    try:
+        places = search_nearby_places(query)
+        st.write(f"추천 맛집 목록 (검색어: {query}):")
+        for place in places:
+            st.write(f"- {place['title']} (주소: {place['address']}, 전화: {place['telephone']})")
+    except Exception as e:
+        st.error(f"맛집 검색 중 오류 발생: {e}")
 
 # Main 실행
 def main():
