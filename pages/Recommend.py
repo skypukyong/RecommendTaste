@@ -8,6 +8,8 @@ import os
 load_dotenv()
 CLIENT_ID = os.getenv("NAVER_CLIENT_ID")
 CLIENT_SECRET = os.getenv("NAVER_CLIENT_SECRET")
+st.write(CLIENT_ID)
+st.write(CLIENT_SECRET)
 
 # Helper functions
 def get_coordinates(address, client_id, client_secret):
