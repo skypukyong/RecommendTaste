@@ -64,6 +64,7 @@ def recommend_restaurants():
     if st.button("추천받기"):
         try:
             # 1. Geocoding API로 좌표 가져오기
+            places= []
             x, y = get_coordinates(address)
             st.success(f"좌표를 찾았습니다: 경도={x}, 위도={y}")
             
