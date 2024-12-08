@@ -34,7 +34,7 @@ def recommend_restaurants():
     st.header("🍴 맛집 추천")
     
     # 주소 입력
-    address = st.text_input("주소를 입력하세요", "서울 강남구")
+    address = st.text_input("주소를 입력하세요")
     
     # 추천 버튼
     if st.button("추천받기"):
