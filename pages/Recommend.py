@@ -83,6 +83,8 @@ def recommend_restaurants():
             # 5. 결과 리스트로 출력
             st.subheader("추천된 맛집 정보")
             st.write(places_df)  # DataFrame을 리스트 형태로 출력
+        except Exception as e:
+            return
 
 # Main 실행
 def main():
