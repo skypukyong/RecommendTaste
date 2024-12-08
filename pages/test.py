@@ -44,8 +44,6 @@ def recommend_restaurants():
             load_dotenv()
             PLACE_CLIENT_ID = os.getenv("PLACE_CLIENT_ID")  # Place Search API Client ID
             PLACE_CLIENT_SECRET = os.getenv("PLACE_CLIENT_SECRET")  # Place Search API Client Secret
-            x, y = get_coordinates(address)
-            st.success(f"좌표를 찾았습니다: 경도={x}, 위도={y}")
             
             # 2. Place Search API로 맛집 검색
             places = search_nearby_places(address+"맛집")
