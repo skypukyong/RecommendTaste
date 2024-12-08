@@ -68,11 +68,7 @@ def recommend_restaurants():
                 cleaned_title = clean_html(place['title'])
                 cleaned_address = clean_html(place['address'])
                 
-                # 링크가 있는 경우만 링크 제공
-                if 'link' in place and place['link']:
-                    st.write(f"**{cleaned_title}** - {cleaned_address} ([상세보기]({place['link']}))")
-                else:
-                    st.write(f"**{cleaned_title}** - {cleaned_address}")
+                st.write(f"**{cleaned_title}** - {cleaned_address} ([상세보기]({place['link']}))")
             
         except Exception as e:
             st.error(f"오류 발생: {e}")
