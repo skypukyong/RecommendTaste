@@ -68,10 +68,72 @@ def recommend_restaurants():
         except Exception as e:
             st.error(f"오류 발생: {e}")
 
+def taste_preference_survey():
+    st.title('🍽️맛 프로필 만들기')
+    
+    if 'preferences' not in st.session_state:
+        st.session_state.preferences = {}
+
+    st.header('매운맛 선호도')
+    spicy_level = st.slider(
+        '얼마나 매운 음식을 좋아하시나요?', 
+        min_value=0, 
+        max_value=10, 
+        value=5,
+        help='0은 전혀 매운 음식을 못 먹음, 10은 아주 매운 음식도 OK'
+    )
+    st.session_state.preferences['spicy_level'] = spicy_level
+
+    st.header('요리 스타일 선호도')
+    cuisine_option = st.selectbox(
+        '좋아하는 요리 스타일을 선택해주세요',
+        ['한식', '중식', '일식', '양식', '동남아 음식', '인도 음식'],
+        help='하나만 선택 가능'
+    )
+    st.session_state.preferences['cuisine_preferences'] = cuisine_option
+
+    st.header('향신료 선호도')
+    spice_intensity = st.radio(
+        '향신료 강도 선호도',
+        ['약한 향신료', '중간 강도', '강한 향신료'],
+        help='음식의 향신료 강도를 선택해주세요'
+    )
+    st.session_state.preferences['spice_intensity'] = spice_intensity
+
+    st.header('식단 선호도')
+    diet_preference = st.radio(
+        '식단 유형',
+        ['육식', '채식', '비건'],
+        help='주로 선호하는 식단 유형'
+    )
+    st.session_state.preferences['diet_preference'] = diet_preference
+
+    if st.button('맛 프로필 완성하기'):
+        st.success('맛 프로필이 성공적으로 저장되었습니다! 👍')
+        preference_str = generate_preference_string()
+        st.text(preference_str)
+        
+        preferences_df = pd.DataFrame.from_dict(st.session_state.preferences, orient='index').T
+        preferences_df.to_csv('user_taste_preferences.csv', index=False)
+
+def generate_preference_string():
+    preferences = st.session_state.preferences
+    
+    # 각 항목을 문자열로 변환하여 하나의 문자열로 합침
+    preference_str = f"매운맛 선호도: {preferences['spicy_level']}\n"
+    preference_str += f"요리 스타일 선호도: {preferences['cuisine_preferences']}\n"
+    preference_str += f"향신료 강도 선호도: {preferences['spice_intensity']}\n"
+    preference_str += f"식단 선호도: {preferences['diet_preference']}\n"
+    
+    return preference_str
+
 # Main 실행
 def main():
     st.sidebar.title("🍴 메뉴")
-    menu = st.sidebar.radio("탭 선택", ["맛집 추천"])
+    menu = st.sidebar.radio("탭 선택", ["맛 프로필"], ["맛집 추천"])
+
+    if menu == "맛 프로필":
+        taste_preference_survey()
     
     if menu == "맛집 추천":
         recommend_restaurants()
