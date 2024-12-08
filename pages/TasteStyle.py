@@ -27,11 +27,7 @@ def ask_gpt(messages):
     return response.choices[0].message.content
 
 
-client = st.session_state.get('openai_client', None)
-if client is None:
-    if st.button("API Key를 입력하세요."):
-        st.switch_page("pages/1_Setting.py")
-    st.stop()
+
 
 st.header("Ask GPT")
 
