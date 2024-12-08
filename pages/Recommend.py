@@ -1,8 +1,8 @@
 import streamlit as st
 import requests
-import pandas as pd
 from dotenv import load_dotenv
 import os
+import pandas as pd
 
 # 환경 변수 로드
 load_dotenv()
@@ -48,72 +48,12 @@ def search_nearby_places(query, x, y):
     else:
         raise Exception("Place Search API Error: " + response.text)
 
-# 맛 프로필 설문
-def taste_preference_survey():
-    """사용자 맛 프로필 설문"""
-    st.header('🍽️ 맛 프로필 만들기기')
-    
-    spicy_level = st.slider(
-        '얼마나 매운 음식을 좋아하시나요?', 
-        min_value=0, 
-        max_value=10, 
-        value=5,
-        help='0은 전혀 매운 음식을 못 먹음, 10은 아주 매운 음식도 OK'
-    )
-    
-    cuisine_options = st.multiselect(
-        '좋아하는 요리 스타일을 선택해주세요',
-        ['한식', '중식', '일식', '양식', '동남아 음식', '인도 음식'],
-        help='여러 개 선택 가능'
-    )
-    
-    spice_intensity = st.radio(
-        '향신료 강도 선호도',
-        ['약한 향신료', '중간 강도', '강한 향신료'],
-        help='음식의 향신료 강도를 선택해주세요'
-    )
-    
-    diet_preference = st.radio(
-        '식단 유형',
-        ['육식', '채식', '비건'],
-        help='주로 선호하는 식단 유형'
-    )
-    
-    disliked_foods = st.text_area(
-        '피하고 싶은 음식이나 알레르기 음식을 적어주세요',
-        help='예: 새우, 견과류, 우유 등'
-    )
-    
-    additional_preferences = st.text_area(
-        '추가로 알려주고 싶은 음식 취향이 있나요?',
-        help='예: 건강식, 다이어트 음식, 특정 요리 스타일 등'
-    )
-    
-    # Save preferences to session state
-    if 'preferences' not in st.session_state:
-        st.session_state.preferences = {}
-        
-    st.session_state.preferences.update({
-        'spicy_level': spicy_level,
-        'cuisine_preferences': cuisine_options,
-        'spice_intensity': spice_intensity,
-        'diet_preference': diet_preference,
-        'disliked_foods': disliked_foods,
-        'additional_preferences': additional_preferences
-    })
-    st.success("맛 프로필이 저장되었습니다!")
-
-# 맛집 추천
+# Streamlit 앱
 def recommend_restaurants():
     st.header("🍴 맛집 추천")
     
     # 주소 입력
     address = st.text_input("주소를 입력하세요", "서울 강남구")
-    
-    # 사용자 맛 프로필 확인
-    if 'preferences' in st.session_state:
-        st.subheader("사용자 맛 프로필")
-        st.json(st.session_state.preferences)
     
     # 추천 버튼
     if st.button("추천받기"):
@@ -123,10 +63,7 @@ def recommend_restaurants():
             st.success(f"좌표를 찾았습니다: 경도={x}, 위도={y}")
             
             # 2. Place Search API로 맛집 검색
-            query = "맛집"
-            if 'preferences' in st.session_state:
-                query += " " + " ".join(st.session_state.preferences['cuisine_preferences'])
-            places = search_nearby_places(query, x, y)
+            places = search_nearby_places("맛집", x, y)
             st.subheader("추천 맛집 목록")
             
             # 3. 결과 출력
@@ -144,11 +81,9 @@ def recommend_restaurants():
 # Main 실행
 def main():
     st.sidebar.title("🍴 메뉴")
-    menu = st.sidebar.radio("탭 선택", ["맛 프로필 입력", "맛집 추천"])
+    menu = st.sidebar.radio("탭 선택", ["맛집 추천"])
     
-    if menu == "맛 프로필 입력":
-        taste_preference_survey()
-    elif menu == "맛집 추천":
+    if menu == "맛집 추천":
         recommend_restaurants()
 
 if __name__ == '__main__':
