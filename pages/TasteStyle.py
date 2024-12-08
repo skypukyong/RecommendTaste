@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from openai import OpenAI
 
 def taste_preference_survey():
     st.title('🍽️맛 프로필 만들기')
