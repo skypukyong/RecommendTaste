@@ -67,20 +67,15 @@ def recommend_restaurants():
             x, y = get_coordinates(address)
             st.success(f"좌표를 찾았습니다: 경도={x}, 위도={y}")
             
-            # 2. 기존 추천 정보 초기화
-            st.session_state.places = []  # 이전 맛집 정보 초기화
-            
-            # 3. Place Search API로 맛집 검색
+            # 2. Place Search API로 맛집 검색
             places = search_nearby_places("맛집", x, y)
-            st.session_state.places = places  # 새로운 맛집 정보 저장
-            
             st.subheader("추천 맛집 목록")
             
-            # 4. 결과 출력
+            # 3. 결과 출력
             for place in places:
                 st.write(f"**{place['title']}** - {place['address']} ([상세보기]({place['link']}))")
             
-            # 5. 결과 CSV 저장
+            # 4. 결과 CSV 저장
             places_df = pd.DataFrame(places)
             places_df.to_csv('recommended_places.csv', index=False)
             st.success("추천 결과가 저장되었습니다: recommended_places.csv")
@@ -90,10 +85,6 @@ def recommend_restaurants():
 
 # Main 실행
 def main():
-    # 세션 상태에 맛집 정보가 없다면 초기화
-    if 'places' not in st.session_state:
-        st.session_state.places = []
-    
     st.sidebar.title("🍴 메뉴")
     menu = st.sidebar.radio("탭 선택", ["맛집 추천"])
     
