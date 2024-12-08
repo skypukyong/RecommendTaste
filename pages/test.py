@@ -3,7 +3,6 @@ import requests
 from dotenv import load_dotenv
 import os
 import pandas as pd
-import time
 
 # 환경 변수 로드
 load_dotenv()
@@ -28,7 +27,7 @@ def search_nearby_places(query):
     if response.status_code == 200:
         return response.json()['items']
     else:
-        raise Exception("Place Search API Error: " + response.text)
+        raise Exception("Place Search API 오류: " + response.text)
 
 # Streamlit 앱
 def recommend_restaurants():
@@ -40,13 +39,8 @@ def recommend_restaurants():
     # 추천 버튼
     if st.button("추천받기"):
         try:
-            # 1. Geocoding API로 좌표 가져오기
-            load_dotenv()
-            PLACE_CLIENT_ID = os.getenv("PLACE_CLIENT_ID")  # Place Search API Client ID
-            PLACE_CLIENT_SECRET = os.getenv("PLACE_CLIENT_SECRET")  # Place Search API Client Secret
-            
             # 2. Place Search API로 맛집 검색
-            places = search_nearby_places(address+"맛집")
+            places = search_nearby_places(address + " 맛집")
             st.subheader("추천 맛집 목록")
             
             # 3. 결과 출력
@@ -55,14 +49,15 @@ def recommend_restaurants():
             
             # 4. 결과 CSV 저장
             places_df = pd.DataFrame(places)
-            places_df.to_csv('recommended_places.csv', index=False)
-            st.success("추천 결과가 저장되었습니다: recommended_places.csv")
+            csv_file = places_df.to_csv(index=False)
+            st.download_button("CSV 다운로드", csv_file, file_name="recommended_places.csv", mime="text/csv")
             
             # 5. 결과 리스트로 출력
             st.subheader("추천된 맛집 정보")
             st.write(places_df)  # DataFrame을 리스트 형태로 출력
+            
         except Exception as e:
-            return
+            st.error(f"오류 발생: {e}")
 
 # Main 실행
 def main():
