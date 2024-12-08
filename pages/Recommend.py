@@ -28,7 +28,7 @@ def get_coordinates(address):
         print(f"좌표 확인: 경도={coords['x']}, 위도={coords['y']}")  # 로그로 좌표 확인
         return float(coords['x']), float(coords['y'])
     else:
-        raise Exception("Geocoding API Error: " + response.text)
+        st.write("잠시만기다려주세요.")
 
 # Place Search API (맛집 검색)
 def search_nearby_places(query, x, y):
