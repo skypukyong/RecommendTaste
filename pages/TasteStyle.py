@@ -51,7 +51,7 @@ def taste_preference_survey():
         st.session_state.preferences = {}
 
     st.header('맛 프로필 제목')
-    profile_title = st.text_input('맛 프로필 제목을 입력해주세요', '나의 맛 프로필')  # 기본값으로 '나의 맛 프로필' 제공
+    profile_title = st.text_input('맛 프로필 제목을 입력해주세요')  # 기본값으로 '나의 맛 프로필' 제공
 
     if 'profile_list' not in st.session_state:
         st.session_state.profile_list = []  # 프로필 목록 초기화
@@ -75,9 +75,9 @@ def taste_preference_survey():
     st.session_state.preferences['cuisine_preferences'] = cuisine_option
 
     if st.button('맛 프로필 완성하기'):
-        # 스피너 표시
+        
         with st.spinner('맛 프로필을 생성하는 중...'):
-            # 생성 작업을 수행한 후, 프로필 저장
+            
             preference_str = generate_preference_string(profile_title)
             st.session_state.profile_list.append({'title': profile_title, 'preferences': preference_str})
             st.success(f'맛 프로필이 성공적으로 저장되었습니다! 🎉')
@@ -85,7 +85,6 @@ def taste_preference_survey():
 def generate_preference_string(profile_title):
     preferences = st.session_state.preferences
     
-    # 매운맛 선호도 변환
     if preferences['spicy_level'] <= 3:
         spicy_description = "맵지 않은"
     elif preferences['spicy_level'] >= 7:
@@ -93,7 +92,6 @@ def generate_preference_string(profile_title):
     else:
         spicy_description = "적당한 매운맛"
     
-    # 각 항목을 문자열로 변환하여 하나의 문자열로 합침
     preference_str = f"{spicy_description} {preferences['cuisine_preferences']}"
     
     return f"{profile_title}: {preference_str}"
@@ -143,7 +141,7 @@ def recommend_restaurants():
             st.error(f"오류 발생: {e}")
 
 
-# Main 실행
+
 def main():
     st.sidebar.title("🍴 메뉴")
     menu = st.sidebar.radio("탭 선택", ["맛 프로필", "맛집 추천"])
