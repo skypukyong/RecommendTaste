@@ -115,15 +115,22 @@ def recommend_restaurants():
     st.write(f"선택된 맛 프로필: {selected_profile['preferences']}")
     
     # 맛집 추천
-    query = selected_profile['preferences']
     if st.button("추천받기"):
         try:
+            query = f"{address} {spicy_description} {cuisine_preferences} 맛집"
             places = search_nearby_places(query)
-            st.write(f"추천 맛집 목록 (검색어: {query}):")
+            st.subheader("추천 맛집 목록")
+            st.markdown("<p style='color: yellow;'>⚠️ 상세보기는 링크로 제대로 된 링크가 포함되어 있지 않을 수 있습니다.</p>", unsafe_allow_html=True)
             for place in places:
-                st.write(f"- {place['title']} (주소: {place['address']}, 전화: {place['telephone']})")
+                # HTML 태그 제거
+                cleaned_title = clean_html(place['title'])
+                cleaned_address = clean_html(place['address'])
+                
+                st.write(f"**{cleaned_title}** - {cleaned_address} ([상세보기]({place['link']}))")
+            
         except Exception as e:
-            st.error(f"맛집 검색 중 오류 발생: {e}")
+            st.error(f"오류 발생: {e}")
+
 
 # Main 실행
 def main():
