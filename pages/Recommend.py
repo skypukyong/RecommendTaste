@@ -52,8 +52,8 @@ def search_nearby_places(query, x, y):
 def recommend_restaurants():
     st.header("🍴 맛집 추천")
     
-    # 주소 입력
-    address = st.text_input("주소를 입력하세요", "서울 강남구")
+    # 주소 입력 (기본값을 공백으로 설정하여 매번 초기화)
+    address = st.text_input("주소를 입력하세요", "")
     
     # 추천 버튼
     if st.button("추천받기"):
@@ -74,6 +74,9 @@ def recommend_restaurants():
             places_df = pd.DataFrame(places)
             places_df.to_csv('recommended_places.csv', index=False)
             st.success("추천 결과가 저장되었습니다: recommended_places.csv")
+            
+            # 주소 초기화 (버튼 클릭 후 빈 값으로 리셋)
+            address = ""
         
         except Exception as e:
             st.error(f"에러 발생: {e}")
