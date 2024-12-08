@@ -31,7 +31,7 @@ def get_coordinates(address):
         st.write("잠시만 기다려주세요.")
 
 # Place Search API (맛집 검색)
-def search_nearby_places(query, x, y):
+def search_nearby_places(query):
     """검색어와 좌표를 기반으로 맛집 정보를 반환"""
     url = "https://openapi.naver.com/v1/search/local.json"
     headers = {
@@ -40,11 +40,8 @@ def search_nearby_places(query, x, y):
     }
     params = {
         "query": query,  # 검색어 (예: "맛집")
-        "x": x,  # 경도
-        "y": y,  # 위도
         "sort": "random",  # 정렬 방식
         "display": 7,  # 결과 개수
-        "timestamp": int(time.time())  # 시간 정보 추가 (캐시 회피)
     }
     response = requests.get(url, headers=headers, params=params)
     
@@ -68,7 +65,7 @@ def recommend_restaurants():
             st.success(f"좌표를 찾았습니다: 경도={x}, 위도={y}")
             
             # 2. Place Search API로 맛집 검색
-            places = search_nearby_places("맛집", x, y)
+            places = search_nearby_places("맛집")
             st.subheader("추천 맛집 목록")
             
             # 3. 결과 출력
