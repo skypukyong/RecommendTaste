@@ -130,7 +130,7 @@ def generate_preference_string():
 # Main 실행
 def main():
     st.sidebar.title("🍴 메뉴")
-    menu = st.sidebar.radio("탭 선택", ["맛 프로필"], ["맛집 추천"])
+    menu = st.sidebar.radio("탭 선택", ["맛 프로필","맛집 추천"])
 
     if menu == "맛 프로필":
         taste_preference_survey()
