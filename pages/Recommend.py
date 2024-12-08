@@ -28,7 +28,7 @@ def get_coordinates(address):
         print(f"좌표 확인: 경도={coords['x']}, 위도={coords['y']}")  # 로그로 좌표 확인
         return float(coords['x']), float(coords['y'])
     else:
-        st.write("잠시만기다려주세요.")
+        st.write("잠시만 기다려주세요.")
 
 # Place Search API (맛집 검색)
 def search_nearby_places(query, x, y):
@@ -43,7 +43,7 @@ def search_nearby_places(query, x, y):
         "x": x,  # 경도
         "y": y,  # 위도
         "sort": "random",  # 정렬 방식
-        "display": 7,       # 결과 개수
+        "display": 7,  # 결과 개수
         "timestamp": int(time.time())  # 시간 정보 추가 (캐시 회피)
     }
     response = requests.get(url, headers=headers, params=params)
@@ -64,12 +64,11 @@ def recommend_restaurants():
     if st.button("추천받기"):
         try:
             # 1. Geocoding API로 좌표 가져오기
-            places= []
             x, y = get_coordinates(address)
             st.success(f"좌표를 찾았습니다: 경도={x}, 위도={y}")
             
             # 2. Place Search API로 맛집 검색
-            places = search_nearby_places("부산 남구 대연동 맛집", x, y)
+            places = search_nearby_places("맛집", x, y)
             st.subheader("추천 맛집 목록")
             
             # 3. 결과 출력
@@ -84,7 +83,6 @@ def recommend_restaurants():
             # 5. 결과 리스트로 출력
             st.subheader("추천된 맛집 정보")
             st.write(places_df)  # DataFrame을 리스트 형태로 출력
-
 
 # Main 실행
 def main():
