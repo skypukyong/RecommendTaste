@@ -40,7 +40,7 @@ def recommend_restaurants():
     if st.button("추천받기"):
         try:
             # 2. Place Search API로 맛집 검색
-            places = search_nearby_places(address + " 맛집")
+            places = search_nearby_places(address)
             st.subheader("추천 맛집 목록")
             
             # 3. 결과 출력
