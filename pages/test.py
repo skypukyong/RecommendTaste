@@ -51,13 +51,13 @@ def recommend_restaurants():
     elif spicy_level >= 7:
         spicy_description = "매운"
     else:
-        spicy_description = "적당한 매운맛"
+        spicy_description = ""
     
     # 추천 버튼
     if st.button("추천받기"):
         try:
             # 검색어 생성: 주소 + 맛 프로필
-            query = f"{address} {spicy_description} {cuisine_preferences}"
+            query = f"{address} {spicy_description} {cuisine_preferences} + "맛집""
             # 2. Place Search API로 맛집 검색
             places = search_nearby_places(query)
             st.subheader("추천 맛집 목록")
