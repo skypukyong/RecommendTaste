@@ -57,7 +57,7 @@ def recommend_restaurants():
     if st.button("추천받기"):
         try:
             # 검색어 생성: 주소 + 맛 프로필
-            query = f"{address} {spicy_description} {cuisine_preferences} + "맛집""
+            query = f"{address} {spicy_description} {cuisine_preferences}  맛집"
             # 2. Place Search API로 맛집 검색
             places = search_nearby_places(query)
             st.subheader("추천 맛집 목록")
