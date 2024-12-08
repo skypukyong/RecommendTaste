@@ -60,8 +60,6 @@ def recommend_restaurants():
             places_df = pd.DataFrame(places)
             places_df['title'] = places_df['title'].apply(clean_html)
             places_df['address'] = places_df['address'].apply(clean_html)
-            csv_file = places_df.to_csv(index=False)
-            st.download_button("CSV 다운로드", csv_file, file_name="recommended_places.csv", mime="text/csv")
             
             # 5. 결과 리스트로 출력
             st.subheader("추천된 맛집 정보")
