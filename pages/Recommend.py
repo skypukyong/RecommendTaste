@@ -61,6 +61,11 @@ def recommend_restaurants():
     if st.button("추천받기"):
         try:
             # 1. Geocoding API로 좌표 가져오기
+            load_dotenv()
+            GEO_CLIENT_ID = os.getenv("GEO_CLIENT_ID")  # Geocoding API Client ID
+            GEO_CLIENT_SECRET = os.getenv("GEO_CLIENT_SECRET")  # Geocoding API Client Secret
+            PLACE_CLIENT_ID = os.getenv("PLACE_CLIENT_ID")  # Place Search API Client ID
+            PLACE_CLIENT_SECRET = os.getenv("PLACE_CLIENT_SECRET")  # Place Search API Client Secret
             x, y = get_coordinates(address)
             st.success(f"좌표를 찾았습니다: 경도={x}, 위도={y}")
             
