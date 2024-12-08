@@ -3,11 +3,17 @@ import requests
 from dotenv import load_dotenv
 import os
 import pandas as pd
+import re
 
 # 환경 변수 로드
 load_dotenv()
 PLACE_CLIENT_ID = os.getenv("PLACE_CLIENT_ID")  # Place Search API Client ID
 PLACE_CLIENT_SECRET = os.getenv("PLACE_CLIENT_SECRET")  # Place Search API Client Secret
+
+# HTML 태그 제거 함수
+def clean_html(text):
+    """HTML 태그를 제거하는 함수"""
+    return re.sub(r'<.*?>', '', text)  # <b>와 같은 HTML 태그를 제거
 
 # Place Search API (맛집 검색)
 def search_nearby_places(query):
@@ -45,10 +51,15 @@ def recommend_restaurants():
             
             # 3. 결과 출력
             for place in places:
-                st.write(f"**{place['title']}** - {place['address']} ([상세보기]({place['link']}))")
+                # HTML 태그 제거
+                cleaned_title = clean_html(place['title'])
+                cleaned_address = clean_html(place['address'])
+                st.write(f"**{cleaned_title}** - {cleaned_address} ([상세보기]({place['link']}))")
             
             # 4. 결과 CSV 저장
             places_df = pd.DataFrame(places)
+            places_df['title'] = places_df['title'].apply(clean_html)
+            places_df['address'] = places_df['address'].apply(clean_html)
             csv_file = places_df.to_csv(index=False)
             st.download_button("CSV 다운로드", csv_file, file_name="recommended_places.csv", mime="text/csv")
             
