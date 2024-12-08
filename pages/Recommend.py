@@ -79,7 +79,11 @@ def recommend_restaurants():
             places_df = pd.DataFrame(places)
             places_df.to_csv('recommended_places.csv', index=False)
             st.success("추천 결과가 저장되었습니다: recommended_places.csv")
-        
+            
+            # 5. 결과 리스트로 출력
+            st.subheader("추천된 맛집 정보")
+            st.write(places_df)  # DataFrame을 리스트 형태로 출력
+
         except Exception as e:
             st.error(f"에러 발생: {e}")
 
