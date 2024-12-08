@@ -73,7 +73,7 @@ def taste_preference_survey():
         with st.spinner('맛 프로필을 생성하는 중...'):
             # 생성 작업을 수행한 후, 완료 메시지
             preference_str = generate_preference_string()
-            st.success(f'맛 프로필이 성공적으로 저장되었습니다! 🎉\n{preference_str}')
+            st.success(f'맛 프로필이 성공적으로 저장되었습니다! 🎉')
 
 def generate_preference_string():
     preferences = st.session_state.preferences
