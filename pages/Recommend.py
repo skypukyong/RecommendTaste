@@ -94,6 +94,10 @@ def main():
     menu = st.sidebar.radio("탭 선택", ["맛집 추천"])
     
     if menu == "맛집 추천":
+        # session_state를 사용하여 상태를 초기화합니다
+        if "places" in st.session_state:
+            del st.session_state["places"]  # 이전 결과를 삭제하여 초기화
+        
         recommend_restaurants()
 
 if __name__ == '__main__':
