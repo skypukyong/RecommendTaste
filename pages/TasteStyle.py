@@ -17,6 +17,12 @@ if api_key:
         client = OpenAI(api_key=api_key)
         st.session_state['openai_client'] = client
 
+client = st.session_state.get('openai_client', None)
+if client is None:
+    if st.button("API Key를 입력하세요."):
+        st.switch_page("pages/1_Setting.py")
+    st.stop()
+
 @st.cache_data
 def ask_gpt(messages):
     client = st.session_state['openai_client']
