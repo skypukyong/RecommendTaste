@@ -113,7 +113,18 @@ def recommend_restaurants():
     selected_profile = next(profile for profile in st.session_state.profile_list if profile['title'] == selected_profile_title)
     
     st.write(f"선택된 맛 프로필: {selected_profile['preferences']}")
-    
+    address = st.text_input("주소를 입력하세요")
+    # 맛 프로필 정보 가져오기
+    spicy_level = st.session_state.preferences.get('spicy_level', 5)
+    cuisine_preferences = st.session_state.preferences.get('cuisine_preferences', '한식')
+
+    # 매운맛 선호도 변환
+    if spicy_level <= 3:
+        spicy_description = "맵지 않은"
+    elif spicy_level >= 7:
+        spicy_description = "매운"
+    else:
+        spicy_description = ""
     # 맛집 추천
     if st.button("추천받기"):
         try:
