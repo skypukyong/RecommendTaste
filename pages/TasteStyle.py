@@ -108,7 +108,7 @@ def recommend_restaurants():
 
     # 맛 프로필 선택
     profile_titles = [profile['title'] for profile in st.session_state.profile_list]
-    selected_profile_title = st.selectbox('추천할 맛 프로필을 선택하세요', profile_titles)
+    selected_profile_title = st.selectbox('맛 프로필을 선택하세요', profile_titles)
 
     selected_profile = next(profile for profile in st.session_state.profile_list if profile['title'] == selected_profile_title)
     
