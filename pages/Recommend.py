@@ -5,8 +5,7 @@ from dotenv import load_dotenv
 import os
 
 # Load environment variables
-os.environ["NAVER_CLIENT_ID"] = ""
-os.environ["NAVER_CLIENT_SECRET"] = ""
+
 
 load_dotenv()
 CLIENT_ID = os.getenv("NAVER_CLIENT_ID")
