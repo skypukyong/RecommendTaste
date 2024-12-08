@@ -8,7 +8,7 @@ import os
 
 
 load_dotenv()
-CLIENT_ID = os.getenv("NAVER_CLIENT_ID")
+CLIENT_ID = "oal5j2zwex"
 CLIENT_SECRET = os.getenv("NAVER_CLIENT_SECRET")
 st.write(CLIENT_ID)
 st.write(CLIENT_SECRET)
