@@ -116,13 +116,14 @@ def recommend_restaurants():
     
     # 맛집 추천
     query = selected_profile['preferences']
-    try:
-        places = search_nearby_places(query)
-        st.write(f"추천 맛집 목록 (검색어: {query}):")
-        for place in places:
-            st.write(f"- {place['title']} (주소: {place['address']}, 전화: {place['telephone']})")
-    except Exception as e:
-        st.error(f"맛집 검색 중 오류 발생: {e}")
+    if st.button("추천받기"):
+        try:
+            places = search_nearby_places(query)
+            st.write(f"추천 맛집 목록 (검색어: {query}):")
+            for place in places:
+                st.write(f"- {place['title']} (주소: {place['address']}, 전화: {place['telephone']})")
+        except Exception as e:
+            st.error(f"맛집 검색 중 오류 발생: {e}")
 
 # Main 실행
 def main():
