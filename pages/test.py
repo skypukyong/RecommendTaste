@@ -44,6 +44,7 @@ def recommend_restaurants():
     # 맛 프로필 정보 가져오기
     spicy_level = st.session_state.preferences.get('spicy_level', 5)
     cuisine_preferences = st.session_state.preferences.get('cuisine_preferences', '한식')
+    diet_preference = st.session_state.preferences.get('diet_preference', '육식')
 
     # 매운맛 선호도 변환
     if spicy_level <= 3:
@@ -57,7 +58,7 @@ def recommend_restaurants():
     if st.button("추천받기"):
         try:
             # 검색어 생성: 주소 + 맛 프로필
-            query = f"{address} {spicy_description} {cuisine_preferences}  맛집"
+            query = f"{address} {spicy_description} {cuisine_preferences} {diet_preference} 맛집"
             # 2. Place Search API로 맛집 검색
             places = search_nearby_places(query)
             st.subheader("추천 맛집 목록")
@@ -69,7 +70,11 @@ def recommend_restaurants():
                 cleaned_title = clean_html(place['title'])
                 cleaned_address = clean_html(place['address'])
                 
-                st.write(f"**{cleaned_title}** - {cleaned_address} ([상세보기]({place['link']}))")
+                # 링크가 있는 경우만 출력
+                if 'link' in place and place['link']:
+                    st.write(f"**{cleaned_title}** - {cleaned_address} ([상세보기]({place['link']}))")
+                else:
+                    st.write(f"**{cleaned_title}** - {cleaned_address}")
             
         except Exception as e:
             st.error(f"오류 발생: {e}")
