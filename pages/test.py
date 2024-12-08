@@ -44,7 +44,6 @@ def recommend_restaurants():
     # 맛 프로필 정보 가져오기
     spicy_level = st.session_state.preferences.get('spicy_level', 5)
     cuisine_preferences = st.session_state.preferences.get('cuisine_preferences', '한식')
-    diet_preference = st.session_state.preferences.get('diet_preference', '육식')
 
     # 매운맛 선호도 변환
     if spicy_level <= 3:
@@ -58,7 +57,7 @@ def recommend_restaurants():
     if st.button("추천받기"):
         try:
             # 검색어 생성: 주소 + 맛 프로필
-            query = f"{address} {spicy_description} {cuisine_preferences} {diet_preference} 맛집"
+            query = f"{address} {spicy_description} {cuisine_preferences} 맛집"
             # 2. Place Search API로 맛집 검색
             places = search_nearby_places(query)
             st.subheader("추천 맛집 목록")
@@ -99,14 +98,6 @@ def taste_preference_survey():
     )
     st.session_state.preferences['cuisine_preferences'] = cuisine_option
 
-    st.header('식단 선호도')
-    diet_preference = st.radio(
-        '식단 유형',
-        ['육식', '채식', '비건'],
-        help='주로 선호하는 식단 유형'
-    )
-    st.session_state.preferences['diet_preference'] = diet_preference
-
     if st.button('맛 프로필 완성하기'):
         st.success('맛 프로필이 성공적으로 저장되었습니다! 👍')
         preference_str = generate_preference_string()
@@ -124,7 +115,7 @@ def generate_preference_string():
         spicy_description = "적당한 매운맛"
     
     # 각 항목을 문자열로 변환하여 하나의 문자열로 합침
-    preference_str = f"{spicy_description} {preferences['cuisine_preferences']} {preferences['diet_preference']}"
+    preference_str = f"{spicy_description} {preferences['cuisine_preferences']}"
     
     return preference_str
 
